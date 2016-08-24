@@ -1,0 +1,75 @@
+{
+  "create_expense": {
+    "_dump_version": 1, 
+    "label": "Create Expense", 
+    "help_text": "Creates a new expense", 
+    "noun": "Expense", 
+    "important": true, 
+    "hide": false, 
+    "url": "https://secure.splitwise.com/api/v3.0/create_expense", 
+    "custom_fields_url": null, 
+    "sample_result_fields": [], 
+    "fields": {
+      "cost": {
+        "label": "Cost", 
+        "required": true, 
+        "help_text": "Total cost of the expense in a reasonable currency format (eg: **$12.34** or **12,34 \u20ac**)", 
+        "placeholder": "13.37", 
+        "default": null, 
+        "choices": null, 
+        "sort": null, 
+        "type_of": "Unicode", 
+        "list": false, 
+        "prefill": null, 
+        "searchfill": null, 
+        "send_in_json": false, 
+        "parent_key": null
+      }, 
+      "description": {
+        "label": "Description", 
+        "required": true, 
+        "help_text": "The title of the expense", 
+        "placeholder": "Paying for that thing", 
+        "default": null, 
+        "choices": null, 
+        "sort": 1, 
+        "type_of": "Unicode", 
+        "list": false, 
+        "prefill": null, 
+        "searchfill": null, 
+        "send_in_json": false, 
+        "parent_key": null
+      }, 
+      "users": {
+        "label": "Participants", 
+        "required": true, 
+        "help_text": "List the users involved in the expense. Whatever user is listed first is the person who paid for it. ", 
+        "placeholder": null, 
+        "default": null, 
+        "choices": null, 
+        "sort": 2, 
+        "type_of": "Integer", 
+        "list": true, 
+        "prefill": "get_friends.id.name", 
+        "searchfill": null, 
+        "send_in_json": false, 
+        "parent_key": null
+      }, 
+      "group_id": {
+        "label": "Group ID", 
+        "required": false, 
+        "help_text": "The id for the group if you want it to be assigned to a group", 
+        "placeholder": null, 
+        "default": null, 
+        "choices": null, 
+        "sort": 3, 
+        "type_of": "Integer", 
+        "list": false, 
+        "prefill": "get_groups.id.name", 
+        "searchfill": null, 
+        "send_in_json": false, 
+        "parent_key": null
+      }
+    }
+  }
+}

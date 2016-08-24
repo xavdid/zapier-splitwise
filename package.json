@@ -1,0 +1,34 @@
+{
+  "name": "splitwise-zapier",
+  "version": "1.0.0",
+  "description": "A Zapier app that gives access to the [Splitwise API](http://dev.splitwise.com/)",
+  "main": "main.js",
+  "dependencies": {
+    "oauth-1.0a": "^1.0.1",
+    "parse-price": "^1.1.3"
+  },
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "replace-in-file": "^2.0.1",
+    "rollup": "^0.34.10",
+    "rollup-plugin-commonjs": "^3.3.1",
+    "rollup-plugin-node-resolve": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xavdid/splitwise-zapier.git"
+  },
+  "keywords": [
+    "zapier",
+    "splitwise"
+  ],
+  "author": "David Brownman <beamneocube@gmail.com> (https://davidbrownman.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xavdid/splitwise-zapier/issues"
+  },
+  "homepage": "https://github.com/xavdid/splitwise-zapier#readme"
+}

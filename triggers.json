@@ -1,0 +1,47 @@
+{
+  "get_groups": {
+    "_dump_version": 1,
+    "label": "Get Groups",
+    "help_text": "Triggers when checking troups",
+    "noun": "Group",
+    "important": false,
+    "hide": true,
+    "data_source": "Polling",
+    "url": "https://secure.splitwise.com/api/v3.0/get_groups",
+    "custom_fields_url": null,
+    "hook_event": null,
+    "hook_static_directions": "Log into your service and paste the below URL into the webhook setup field.",
+    "sample_result_fields": [],
+    "fields": {}
+  },
+  "get_expenses": {
+    "_dump_version": 1,
+    "label": "Fetch Expenses",
+    "help_text": "fetch expenses",
+    "noun": "expense",
+    "important": false,
+    "hide": true,
+    "data_source": "Polling",
+    "url": "https://secure.splitwise.com/api/v3.0/get_expenses",
+    "custom_fields_url": null,
+    "hook_event": null,
+    "hook_static_directions": "Log into your service and paste the below URL into the webhook setup field.",
+    "sample_result_fields": [],
+    "fields": {}
+  },
+  "get_friends": {
+    "_dump_version": 1,
+    "label": "Get Friends",
+    "help_text": "Triggers when fetching friends.",
+    "noun": "Friend",
+    "important": false,
+    "hide": true,
+    "data_source": "Polling",
+    "url": "https://secure.splitwise.com/api/v3.0/get_friends",
+    "custom_fields_url": null,
+    "hook_event": null,
+    "hook_static_directions": "Log into your service and paste the below URL into the webhook setup field.",
+    "sample_result_fields": [],
+    "fields": {}
+  }
+}
