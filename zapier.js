@@ -101,8 +101,10 @@ var Zap = { // eslint-disable-line no-unused-vars
     delete bundle.action_fields_full.users
 
     bundle.request.data = _.extend({}, bundle.action_fields_full, usersObj)
+    var cost = parsePrice(bundle.action_fields_full.cost)
     // user 0 always pays the full cost. Need clean float representation
-    bundle.request.data.users__0__paid_share = parsePrice(bundle.action_fields_full.cost)
+    bundle.request.data.users__0__paid_share = cost
+    bundle.request.data.cost = cost
 
     return bundle.request
   },
