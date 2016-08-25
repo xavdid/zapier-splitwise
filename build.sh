@@ -1,46 +1,11 @@
-#! /usr/local/bin/node
+#! /bin/bash
 
-require('dotenv').config()
+# shh, shellcheck
+# shellcheck disable=2002
 
-const rollup = require('rollup')
-const commonjs = require('rollup-plugin-commonjs')
-const nodeResolve = require('rollup-plugin-node-resolve')
+# this cat is useful, as <bundle.js doesn't redirect properly in an execution context as far as pbcopy is concerned.
+# it probably should, but it's fine. 
 
-const replace = require('replace-in-file')
-
-// build bundle
-rollup
-  .rollup({
-    entry: 'zapier.js',
-    plugins: [
-      nodeResolve(),
-      commonjs()
-    ]
-  })
-  .then(bundle => bundle.write({
-    dest: 'bundle.js',
-    format: 'cjs'
-  }))
-  // don't need to get result of previous action
-  .then(() => replace(genConfig(oauthString('public'))))
-  .then(() => replace(genConfig(oauthString('secret'))))
-  // zapier can't handle const yet
-  .then(() => replace({
-    files: './bundle.js',
-    replace: /const /g,
-    with: 'var '
-  }))
-  .catch(err => console.log(err.stack))
-
-// helpers
-function genConfig (key) {
-  return {
-    files: './bundle.js',
-    replace: `<${key}>`,
-    with: process.env[key]
-  }
-}
-
-function oauthString (key) {
-  return `OAUTH_CONSUMER_${key.toUpperCase()}`
-}
+./compile.sh && 
+cat bundle.js | pbcopy && 
+open "https://zapier.com/developer/builder/app/44896/scripting"
