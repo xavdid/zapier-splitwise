@@ -9,27 +9,31 @@ const nodeResolve = require('rollup-plugin-node-resolve')
 const replace = require('replace-in-file')
 
 // build bundle
-rollup.rollup({
-  entry: 'zapier.js',
-  plugins: [
-    nodeResolve(),
-    commonjs()
-  ]
-}).then(bundle => bundle.write({
-  dest: 'bundle.js',
-  format: 'cjs'
-})).then(() => {
-  // inject key/secret
-  try {
-    replace.sync(replaceConfig(oauthString('public')))
-    replace.sync(replaceConfig(oauthString('secret')))
-  } catch (error) {
-    Promise.reject(error)
-  }
-}).catch(err => console.log(err.stack))
+rollup
+  .rollup({
+    entry: 'zapier.js',
+    plugins: [
+      nodeResolve(),
+      commonjs()
+    ]
+  })
+  .then(bundle => bundle.write({
+    dest: 'bundle.js',
+    format: 'cjs'
+  }))
+  // don't need to get result of previous action
+  .then(() => replace(genConfig(oauthString('public'))))
+  .then(() => replace(genConfig(oauthString('secret'))))
+  // zapier can't handle const yet
+  .then(() => replace({
+    files: './bundle.js',
+    replace: /const /g,
+    with: 'var '
+  }))
+  .catch(err => console.log(err.stack))
 
 // helpers
-function replaceConfig (key) {
+function genConfig (key) {
   return {
     files: './bundle.js',
     replace: `<${key}>`,
