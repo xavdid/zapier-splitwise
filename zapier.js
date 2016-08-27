@@ -1,4 +1,5 @@
-/* global z, _, ErrorException, crypto */ // eslint-disable-line no-unused-vars
+// this is all stuff zapier exposes
+/* global z, _, ErrorException, crypto, moment */ // eslint-disable-line no-unused-vars
 
 import parsePrice from 'parse-price'
 import OAuth from 'oauth-1.0a'
@@ -7,6 +8,7 @@ import OAuth from 'oauth-1.0a'
 var rootUrl = 'https://secure.splitwise.com/api/v3.0'
 var contentTypeHeader = 'application/x-www-form-urlencoded'
 
+// helpers
 var oauth = OAuth({
   consumer: {
     public: '<OAUTH_CONSUMER_PUBLIC>',
@@ -54,6 +56,30 @@ function userIdsToKeys (ids, cost) {
   return res
 }
 
+// utils
+function handleError (result) {
+  // why aren't these standard?
+  if (result.errors && result.errors.base) {
+    throw new ErrorException(result.errors.base.join('\n'))
+  } else if (result.error) {
+    throw new ErrorException(result.error)
+  }
+}
+
+// sort by id, newest first
+function newestFirst (a, b) {
+  var keyA = a.id
+  var keyB = b.id
+  if (keyA < keyB) return 1
+  if (keyA > keyB) return -1
+  return 0
+}
+
+function removeDeleted (obj) {
+  // falsy when expense was deleted
+  return !obj.deleted_at
+}
+
 var Zap = { // eslint-disable-line no-unused-vars
   get_friends_post_poll: function (bundle) {
     var friends = JSON.parse(bundle.response.content).friends
@@ -94,6 +120,24 @@ var Zap = { // eslint-disable-line no-unused-vars
     return groups
   },
 
+  new_expense_pre_poll: function (bundle) {
+    bundle.request.headers['Content-Type'] = contentTypeHeader // needed for auth
+    bundle.request.params = {
+      group_id: bundle.trigger_fields.group_id,
+      dated_after: moment().subtract(1, 'hour').toISOString(),
+      limit: 0 // no limit
+    }
+
+    return bundle.request
+  },
+
+  new_expense_post_poll: function (bundle) {
+    var result = JSON.parse(bundle.response.content)
+    handleError(result)
+
+    return result.expenses.filter(removeDeleted).sort(newestFirst)
+  },
+
   create_expense_pre_write: function (bundle) {
     bundle.request.headers['Content-Type'] = contentTypeHeader
 
@@ -111,11 +155,7 @@ var Zap = { // eslint-disable-line no-unused-vars
 
   create_expense_post_write: function (bundle) {
     var result = JSON.parse(bundle.response.content)
-    if (result.errors.base) {
-      var message = result.errors.base.join('\n')
-      throw new ErrorException(message)
-    } else {
-      return result
-    }
+    handleError(result)
+    return result
   }
 } // end zap
