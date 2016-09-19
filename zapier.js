@@ -1,6 +1,7 @@
 // this is all stuff zapier exposes
 /* global z, _, ErrorException, crypto, moment */ // eslint-disable-line no-unused-vars
 
+// need es6 imports for rollup
 import parsePrice from 'parse-price'
 import OAuth from 'oauth-1.0a'
 
@@ -23,6 +24,7 @@ function fetchToken (authFields) {
   }
 }
 
+// sum of an array of ints
 function sum (arr) {
   return arr.reduce(function (a, b) {
     return a + b
@@ -32,7 +34,7 @@ function sum (arr) {
 function calculatePortions (ids, cost) {
   cost = parsePrice(cost) * 100
   var costPer = Math.round(cost / ids.length)
-  // makes an array of identical costs
+  // makes an array of (nearly) identical costs
   var portions = ids.map(function (x) { return costPer })
 
   // tweak it so portions add to cost exactly
@@ -58,13 +60,17 @@ function userIdsToKeys (ids, cost) {
 
 // utils
 function handleError (result) {
-  // why aren't these standard?
+  // why aren't these standard across splitwise calls?
   if (result.errors && result.errors.base) {
     throw new ErrorException(result.errors.base.join('\n'))
   } else if (result.error) {
     throw new ErrorException(result.error)
+  } else {
+    // this is fine
   }
 }
+
+// AGGREGATORS
 
 // sort by id, newest first
 function newestFirst (a, b) {
