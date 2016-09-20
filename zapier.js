@@ -129,9 +129,15 @@ var Zap = { // eslint-disable-line no-unused-vars
   new_expense_pre_poll: function (bundle) {
     bundle.request.headers['Content-Type'] = contentTypeHeader // needed for auth
     bundle.request.params = {
-      group_id: bundle.trigger_fields.group_id,
-      dated_after: moment().subtract(1, 'hour').toISOString(),
-      limit: 0 // no limit
+      group_id: bundle.trigger_fields.group_id
+    }
+
+    // for tests, we always want to find something, whenever it was made
+    if (bundle.meta.frontend) {
+      bundle.request.params.limit = 3
+    } else {
+      bundle.request.params.dated_after = moment().subtract(1, 'hour').toISOString()
+      bundle.request.params.limit = 0 // no limit
     }
 
     return bundle.request
