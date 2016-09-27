@@ -2,6 +2,12 @@
 
 A [Zapier](https://zapier.com) app that gives access to the [Splitwise API](http://dev.splitwise.com/). This versions is built for Zapier platform 2.
 
+## Using the App
+
+All you need to do is click this link: https://zapier.com/developer/invite/44896/c9f2502483d5c010b0cd62131af24f61/
+
+It'll prompt you to create a Zapier account if you don't already have one. Feel free open an [issue](https://github.com/xavdid/zapier-splitwise/issues) if you run into a bug or have feedback for how the app works.
+
 ## Current Features
 
 Triggers:
@@ -12,15 +18,17 @@ Actions:
 
 If you've got suggestions, feel free to open an issue!
 
-## Making a Zapier App
+## Making Your Own
+
+The most powerful part of Zapier is that they allow you to create your own apps (for both public and private use). While I was making this app, I hit some development corner cases, so I've collected some of the solutions here.
 
 In the current state of the world, it's tricky to use node modules within zapier apps. There's also no concept of environment variables. Depending on your task, this matters either a lot or a little and in the case of Splitwise (and their OAuth 1.0 authentication), it's a pain in the butt. Luckily, it's fixable.
 
 ### Bundles
 
-[Rollup](https://github.com/rollup/rollup) is a js bundler simliar to Browserify and Webpack, but it does less magic. That's important, because Zapier expects a variable called `Zap` that has some specifically named functions on it. Also, you can't use any node imports besides a couple of [pre-defined](https://zapier.com/developer/documentation/v2/scripting/#available-libraries) modules.
+[Rollup](https://github.com/rollup/rollup) is a javascript bundler simliar to Browserify and Webpack, but it does less magic. That's important, because Zapier expects a variable called `Zap` that has some specifically named functions on it. Also, you can't use any node imports besides a couple of [pre-defined](https://zapier.com/developer/documentation/v2/scripting/#available-libraries) modules.
 
-You can check out `compile.sh` for the full dish, but the meat of the matter is this:
+You can check out `compile` for the full dish, but the meat of the matter is this:
 
 ```javascript
 const rollup = require('rollup')
