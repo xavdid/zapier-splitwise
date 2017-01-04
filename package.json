@@ -1,33 +1,23 @@
 {
-  "name": "splitwise-zapier",
+  "name": "splitwise",
   "version": "1.0.0",
-  "description": "A Zapier app that gives access to the Splitwise API",
-  "main": "zapier.js",
-  "dependencies": {
-    "oauth-1.0a": "xavdid/oauth-1.0a",
-    "parse-price": "^1.1.3",
-    "dotenv": "^2.0.0",
-    "replace-in-file": "^2.0.1",
-    "rollup": "^0.34.10",
-    "rollup-plugin-commonjs": "^3.3.1",
-    "rollup-plugin-node-resolve": "^2.0.0"
-  },
+  "description": "An app for splitting bills and expenses with friends. ",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./build"
+    "test": "node node_modules/mocha/bin/mocha --recursive"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xavdid/splitwise-zapier.git"
+  "engines": {
+    "node": ">=4.3.0",
+    "npm": ">=2.0.0"
   },
-  "keywords": [
-    "zapier",
-    "splitwise"
-  ],
-  "author": "David Brownman <beamneocube@gmail.com> (https://davidbrownman.com)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/xavdid/splitwise-zapier/issues"
+  "dependencies": {
+    "lodash": "4.15.0",
+    "zapier-platform-core": "0.9.10"
   },
-  "homepage": "https://github.com/xavdid/splitwise-zapier#readme"
+  "devDependencies": {
+    "babel": "6.5.2",
+    "babel-eslint": "6.1.2",
+    "mocha": "2.5.3",
+    "should": "9.0.2"
+  }
 }
