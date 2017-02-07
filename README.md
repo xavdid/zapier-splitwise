@@ -4,19 +4,13 @@ A [Zapier](https://zapier.com) app that gives access to the [Splitwise API](http
 
 ## Using the App
 
-All you need to do is click this link: https://zapier.com/developer/invite/44896/c9f2502483d5c010b0cd62131af24f61/
+The app is available to everyone when creating a zap! Select it like you would any other. 
 
-It'll prompt you to create a Zapier account if you don't already have one. Feel free open an [issue](https://github.com/xavdid/zapier-splitwise/issues) if you run into a bug or have feedback for how the app works.
+It'll prompt you to create a Zapier account if you don't already have one. Feel free open an [issue](https://github.com/xavdid/zapier-splitwise/issues) or email contact@zapier.com if you run into a bug or have feedback for how the app works.
 
 ## Current Features
 
-Triggers:
-* New Expense
-
-Actions:
-* Create a New Expense
-
-If you've got suggestions, feel free to open an issue!
+See the zapbook page for more info: https://zapier.com/zapbook/splitwise/
 
 ## Making Your Own
 
