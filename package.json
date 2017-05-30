@@ -4,9 +4,9 @@
   "description": "A Zapier app that gives access to the Splitwise API",
   "main": "zapier.js",
   "dependencies": {
-    "oauth-1.0a": "xavdid/oauth-1.0a",
+    "dotenv": "^4.0.0",
+    "oauth-1.0a": "^2.1.1",
     "parse-price": "^1.1.3",
-    "dotenv": "^2.0.0",
     "replace-in-file": "^2.0.1",
     "rollup": "^0.34.10",
     "rollup-plugin-commonjs": "^3.3.1",
