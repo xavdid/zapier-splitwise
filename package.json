@@ -1,5 +1,5 @@
 {
-  "name": "splitwise-zapier",
+  "name": "zapier-splitwise",
   "version": "1.0.0",
   "description": "A Zapier app that gives access to the Splitwise API",
   "main": "zapier.js",
@@ -13,12 +13,12 @@
     "rollup-plugin-node-resolve": "^2.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node tests.js | node_modules/.bin/tap-spec",
     "build": "./build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xavdid/splitwise-zapier.git"
+    "url": "git+https://github.com/xavdid/zapier-splitwise.git"
   },
   "keywords": [
     "zapier",
@@ -27,7 +27,11 @@
   "author": "David Brownman <beamneocube@gmail.com> (https://davidbrownman.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/xavdid/splitwise-zapier/issues"
+    "url": "https://github.com/xavdid/zapier-splitwise/issues"
   },
-  "homepage": "https://github.com/xavdid/splitwise-zapier#readme"
+  "homepage": "https://github.com/xavdid/zapier-splitwise#readme",
+  "devDependencies": {
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
+  }
 }
