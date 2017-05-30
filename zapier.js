@@ -1,23 +1,23 @@
 // this is all stuff zapier exposes
-/* global z, _, ErrorException, crypto, moment */ // eslint-disable-line no-unused-vars
+/* global z, _, ErrorException, moment */
 
 // need es6 imports for rollup
 import parsePrice from 'parse-price'
 import OAuth from 'oauth-1.0a'
 
 // these could be const
-var rootUrl = 'https://secure.splitwise.com/api/v3.0'
-var contentTypeHeader = 'application/x-www-form-urlencoded'
+const rootUrl = 'https://secure.splitwise.com/api/v3.0'
+const contentTypeHeader = 'application/x-www-form-urlencoded'
 
 // helpers
-var oauth = OAuth({
+const oauth = OAuth({
   consumer: {
     public: '<OAUTH_CONSUMER_PUBLIC>',
     secret: '<OAUTH_CONSUMER_SECRET>'
   }
 })
 
-function fetchToken (authFields) {
+const fetchToken = function (authFields) {
   return {
     public: authFields.oauth_token,
     secret: authFields.oauth_token_secret
@@ -25,17 +25,17 @@ function fetchToken (authFields) {
 }
 
 // sum of an array of ints
-function sum (arr) {
+const sum = function (arr) {
   return arr.reduce(function (a, b) {
     return a + b
   }, 0)
 }
 
-function calculatePortions (ids, cost) {
+const calculatePortions = function (ids, cost) {
   cost = parsePrice(cost) * 100
-  var costPer = Math.round(cost / ids.length)
+  let costPer = Math.round(cost / ids.length)
   // makes an array of (nearly) identical costs
-  var portions = ids.map(function (x) { return costPer })
+  let portions = ids.map(function (x) { return costPer })
 
   // tweak it so portions add to cost exactly
   while (sum(portions) > cost) {
@@ -45,10 +45,10 @@ function calculatePortions (ids, cost) {
   return portions
 }
 
-function userIdsToKeys (ids, cost) {
+const userIdsToKeys = function (ids, cost) {
   // iterate each with index
-  var res = {}
-  var portions = calculatePortions(ids, cost)
+  let res = {}
+  let portions = calculatePortions(ids, cost)
 
   ids.forEach(function (id, index) {
     res['users__' + index + '__user_id'] = id
@@ -59,7 +59,7 @@ function userIdsToKeys (ids, cost) {
 }
 
 // utils
-function handleError (result) {
+const handleError = function (result) {
   // why aren't these standard across splitwise calls?
   if (result.errors && result.errors.base) {
     throw new ErrorException(result.errors.base.join('\n'))
@@ -73,34 +73,34 @@ function handleError (result) {
 // AGGREGATORS
 
 // sort by id, newest first
-function newestFirst (a, b) {
-  var keyA = a.id
-  var keyB = b.id
+const newestFirst = function (a, b) {
+  let keyA = a.id
+  let keyB = b.id
   if (keyA < keyB) return 1
   if (keyA > keyB) return -1
   return 0
 }
 
-function removeDeleted (obj) {
+const removeDeleted = function (obj) {
   // falsy when expense was deleted
   return !obj.deleted_at
 }
 
-var Zap = { // eslint-disable-line no-unused-vars
+module.exports = {
   get_friends_post_poll: function (bundle) {
-    var friends = JSON.parse(bundle.response.content).friends
+    let friends = JSON.parse(bundle.response.content).friends
     friends.forEach(function (friend) {
       friend.name = friend.first_name + ' ' + friend.last_name
     })
 
-    var token = fetchToken(bundle.auth_fields)
+    let token = fetchToken(bundle.auth_fields)
 
-    var requestData = {
+    let requestData = {
       url: rootUrl + '/get_current_user',
       method: 'GET'
     }
 
-    var me = JSON.parse(z.request({
+    let me = JSON.parse(z.request({
       method: requestData.method,
       url: requestData.url,
       'headers': _.extend({
@@ -118,9 +118,9 @@ var Zap = { // eslint-disable-line no-unused-vars
   },
 
   get_groups_post_poll: function (bundle) {
-    var groups = JSON.parse(bundle.response.content).groups
+    let groups = JSON.parse(bundle.response.content).groups
     // non group expenses group is always first, let's make it last
-    var nonGroupExpenses = groups.splice(0, 1)[0]
+    let nonGroupExpenses = groups.splice(0, 1)[0]
     groups = _.sortBy(groups, 'name')
     groups.push(nonGroupExpenses)
     return groups
@@ -144,7 +144,7 @@ var Zap = { // eslint-disable-line no-unused-vars
   },
 
   new_expense_post_poll: function (bundle) {
-    var result = JSON.parse(bundle.response.content)
+    let result = JSON.parse(bundle.response.content)
     handleError(result)
 
     return result.expenses.filter(removeDeleted).sort(newestFirst)
@@ -153,11 +153,11 @@ var Zap = { // eslint-disable-line no-unused-vars
   create_expense_pre_write: function (bundle) {
     bundle.request.headers['Content-Type'] = contentTypeHeader
 
-    var usersObj = userIdsToKeys(bundle.action_fields_full.users, bundle.action_fields_full.cost)
+    let usersObj = userIdsToKeys(bundle.action_fields_full.users, bundle.action_fields_full.cost)
     delete bundle.action_fields_full.users
 
     bundle.request.data = _.extend({}, bundle.action_fields_full, usersObj)
-    var cost = parsePrice(bundle.action_fields_full.cost)
+    let cost = parsePrice(bundle.action_fields_full.cost)
     // user 0 always pays the full cost. Need clean float representation
     bundle.request.data.users__0__paid_share = cost
     bundle.request.data.cost = cost
@@ -166,7 +166,7 @@ var Zap = { // eslint-disable-line no-unused-vars
   },
 
   create_expense_post_write: function (bundle) {
-    var result = JSON.parse(bundle.response.content)
+    let result = JSON.parse(bundle.response.content)
     handleError(result)
     return result
   }

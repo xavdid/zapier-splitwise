@@ -1,4 +1,4 @@
-#! /usr/local/bin/node
+#! /usr/bin/env node
 
 require('dotenv').config()
 
@@ -6,17 +6,45 @@ const rollup = require('rollup')
 const commonjs = require('rollup-plugin-commonjs')
 const nodeResolve = require('rollup-plugin-node-resolve')
 
+const exec = require('child_process').execSync
+
 const replace = require('replace-in-file')
 
-// build bundle
-rollup
-  .rollup({
-    entry: 'zapier.js',
-    plugins: [
-      nodeResolve(),
-      commonjs()
-    ]
+const tempFileName = 'temp.js'
+
+// helpers
+const genConfig = (key) => {
+  return {
+    files: './bundle.js',
+    from: `<${key}>`,
+    to: process.env[key]
+  }
+}
+
+const oauthString = (key) => {
+  return `OAUTH_CONSUMER_${key.toUpperCase()}`
+}
+
+// set up for editing
+exec(`cp zapier.js ${tempFileName}`)
+
+// module is just for tests
+replace({
+  files: tempFileName,
+  from: 'module.exports',
+  to: 'var Zap'
+})
+  .then(() => {
+    return rollup
+      .rollup({
+        entry: tempFileName,
+        plugins: [
+          nodeResolve(),
+          commonjs()
+        ]
+      })
   })
+  // build bundle
   .then(bundle => bundle.write({
     dest: 'bundle.js',
     format: 'cjs'
@@ -26,21 +54,10 @@ rollup
   .then(() => replace(genConfig(oauthString('secret'))))
   // zapier can't handle const yet
   .then(() => replace({
-    files: './bundle.js',
-    replace: /const /g,
-    with: 'var '
+    files: 'bundle.js',
+    from: /(const|let) /g,
+    to: 'var '
   }))
+  .then(() => { exec(`rm ${tempFileName}`) })
   .catch(err => console.log(err.stack))
 
-// helpers
-function genConfig (key) {
-  return {
-    files: './bundle.js',
-    replace: `<${key}>`,
-    with: process.env[key]
-  }
-}
-
-function oauthString (key) {
-  return `OAUTH_CONSUMER_${key.toUpperCase()}`
-}

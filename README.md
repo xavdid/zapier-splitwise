@@ -4,7 +4,7 @@ A [Zapier](https://zapier.com) app that gives access to the [Splitwise API](http
 
 ## Using the App
 
-The app is available to everyone when creating a zap! Select it like you would any other. 
+The app is available to everyone when creating a zap! Select it like you would any other.
 
 It'll prompt you to create a Zapier account if you don't already have one. Feel free open an [issue](https://github.com/xavdid/zapier-splitwise/issues) or email contact@zapier.com if you run into a bug or have feedback for how the app works.
 
@@ -20,9 +20,9 @@ In the current state of the world, it's tricky to use node modules within zapier
 
 ### Bundles
 
-**NOTE**: This was made before the release of Zapier's [Platform CLI](https://github.com/zapier/zapier-platform-cli), which largely removes the need for this workaround. If you're able, I suggest using the CLI. If you're unable, this will stay here as reference (though the behavior isn't officially supported). 
+**NOTE**: This was made before the release of Zapier's [Platform CLI](https://github.com/zapier/zapier-platform-cli), which largely removes the need for this workaround. If you're able, I suggest using the CLI. If you're unable, this will stay here as reference (though the behavior isn't officially supported).
 
-[Rollup](https://github.com/rollup/rollup) is a javascript bundler simliar to Browserify and Webpack, but it does less magic. That's important, because Zapier expects a variable called `Zap` that has some specifically named functions on it. Also, you can't use any node imports besides a couple of [pre-defined](https://zapier.com/developer/documentation/v2/scripting/#available-libraries) modules.
+[Rollup](https://github.com/rollup/rollup) is a javascript bundler similar to Browserify and Webpack, but it does less magic. That's important, because Zapier expects a variable called `Zap` that has some specifically named functions on it. Also, you can't use any node imports besides a couple of [pre-defined](https://zapier.com/developer/documentation/v2/scripting/#available-libraries) modules.
 
 You can check out `compile` for the full dish, but the meat of the matter is this:
 
