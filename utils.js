@@ -1,7 +1,6 @@
-/* global ErrorException */
+/* global ErrorException, _ */
 
 const parsePrice = require('parse-price')
-// import parsePrice from 'parse-price'
 
 // helpers
 const fetchToken = function (authFields) {
@@ -44,7 +43,13 @@ const calculatePortions = function (ids, cost) {
     ].join(' ')
     throw new ErrorException(errMessage)
   }
-  return portions
+  // to randomize for max fairness, shuffle this array
+  // underscore can't be used in tests but not be in the bundle
+  if (typeof _ === 'undefined') {
+    return portions
+  } else {
+    return _.shuffle(portions)
+  }
 }
 
 const userIdsToKeys = function (ids, cost) {

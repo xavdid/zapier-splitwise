@@ -19,7 +19,7 @@ const oauth = OAuth({
 
 module.exports = {
   get_friends_post_poll: function (bundle) {
-    let friends = JSON.parse(bundle.response.content).friends
+    let friends = z.JSON.parse(bundle.response.content).friends
     friends.forEach(function (friend) {
       friend.name = friend.first_name + ' ' + friend.last_name
     })
@@ -31,7 +31,7 @@ module.exports = {
       method: 'GET'
     }
 
-    let me = JSON.parse(z.request({
+    let me = z.JSON.parse(z.request({
       method: requestData.method,
       url: requestData.url,
       'headers': _.extend({
@@ -43,13 +43,12 @@ module.exports = {
     // insert me at front of sorted array
     friends = _.sortBy(friends, 'name')
     friends.splice(0, 0, me)
-    // console.log(me)
 
     return friends
   },
 
   get_groups_post_poll: function (bundle) {
-    let groups = JSON.parse(bundle.response.content).groups
+    let groups = z.JSON.parse(bundle.response.content).groups
     // non group expenses group is always first, let's make it last
     let nonGroupExpenses = groups.splice(0, 1)[0]
     groups = _.sortBy(groups, 'name')
@@ -75,7 +74,7 @@ module.exports = {
   },
 
   new_expense_post_poll: function (bundle) {
-    let result = JSON.parse(bundle.response.content)
+    let result = z.JSON.parse(bundle.response.content)
     utils.handleError(result)
 
     return result.expenses.filter(utils.removeDeleted).sort(utils.newestFirst)
@@ -97,7 +96,7 @@ module.exports = {
   },
 
   create_expense_post_write: function (bundle) {
-    let result = JSON.parse(bundle.response.content)
+    let result = z.JSON.parse(bundle.response.content)
     utils.handleError(result)
     return result
   }
