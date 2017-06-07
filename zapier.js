@@ -1,5 +1,5 @@
 // this is all stuff zapier exposes
-/* global z, _, moment */
+/* global z, _, moment, ErrorException */
 
 // need es6 imports for rollup
 import parsePrice from 'parse-price'
@@ -82,16 +82,27 @@ module.exports = {
 
   create_expense_pre_write: function (bundle) {
     bundle.request.headers['Content-Type'] = contentTypeHeader
+    let parsedCost = parsePrice(bundle.action_fields_full.cost)
+    let groupId = bundle.action_fields_full.group_id
+    let users = bundle.action_fields_full.users || []
 
-    let usersObj = utils.userIdsToKeys(bundle.action_fields_full.users, bundle.action_fields_full.cost)
-    delete bundle.action_fields_full.users
+    if (!(users || groupId)) {
+      throw new ErrorException('Need to specify either a group or participants')
+    } else if (groupId && !users) {
+      // default split, authed user pays
+      bundle.request.data = _.extend({}, bundle.action_fields_full, { split_equally: true })
+    } else {
+      // manually specified participants
+      let usersObj = utils.userIdsToKeys(users, bundle.action_fields_full.cost)
+      delete bundle.action_fields_full.users
 
-    bundle.request.data = _.extend({}, bundle.action_fields_full, usersObj)
-    let cost = parsePrice(bundle.action_fields_full.cost)
-    // user 0 always pays the full cost. Need clean float representation
-    bundle.request.data.users__0__paid_share = cost
-    bundle.request.data.cost = cost
+      bundle.request.data = _.extend({}, bundle.action_fields_full, usersObj)
 
+      // user 0 always pays the full cost. Need clean float representation
+      bundle.request.data.users__0__paid_share = parsedCost
+    }
+
+    bundle.data.cost = parsedCost
     return bundle.request
   },
 
