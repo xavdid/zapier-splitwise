@@ -102,7 +102,7 @@ module.exports = {
       bundle.request.data.users__0__paid_share = parsedCost
     }
 
-    bundle.data.cost = parsedCost
+    bundle.request.data.cost = parsedCost
     return bundle.request
   },
 
