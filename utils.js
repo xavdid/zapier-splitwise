@@ -21,14 +21,15 @@ const calculatePortions = function (ids, cost) {
   cost = parsePrice(cost) * 100
   let costPer = Math.round(cost / ids.length)
   // makes an array of (nearly) identical costs
-  let portions = ids.map(function (x) { return costPer })
-
-  // tweak it so portions add to cost exactly
-  while (sum(portions) > cost) {
-    portions[0] -= 1
-  }
+  let portions = Array(ids.length).fill(costPer)
 
   let nextCentIndex = 0
+  // tweak it so portions add to cost exactly
+  while (sum(portions) > cost) {
+    portions[nextCentIndex % portions.length] -= 1
+    nextCentIndex += 1
+  }
+
   while (sum(portions) < cost) {
     portions[nextCentIndex % portions.length] += 1
     nextCentIndex += 1

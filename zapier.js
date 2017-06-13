@@ -86,9 +86,9 @@ module.exports = {
     let groupId = bundle.action_fields_full.group_id
     let users = bundle.action_fields_full.users || []
 
-    if (!(users || groupId)) {
+    if (!(users.length || groupId)) {
       throw new ErrorException('Need to specify either a group or participants')
-    } else if (groupId && !users) {
+    } else if (groupId && !users.length) {
       // default split, authed user pays
       bundle.request.data = _.extend({}, bundle.action_fields_full, { split_equally: true })
     } else {
