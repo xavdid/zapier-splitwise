@@ -18,7 +18,7 @@ const sum = function (arr) {
 }
 
 const calculatePortions = function (ids, cost) {
-  cost = parsePrice(cost) * 100
+  cost = Math.round(parsePrice(cost) * 100)
   let costPer = Math.round(cost / ids.length)
   // makes an array of (nearly) identical costs
   let portions = Array(ids.length).fill(costPer)

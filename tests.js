@@ -1,4 +1,4 @@
-const test = require('tape')
+const test = require('tape-catch')
 
 const utils = require('./utils')
 
@@ -27,6 +27,11 @@ test('calculatePortions', (t) => {
   t.deepEqual(
     utils.calculatePortions([1, 2, 3, 4, 5], '123.12'),
     [2463, 2463, 2462, 2462, 2462]
+  )
+
+  t.deepEqual(
+    utils.calculatePortions([1, 2], '$69.93'),
+    [3496, 3497]
   )
 
   t.end()
