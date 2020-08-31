@@ -1,3 +1,7 @@
+# NOTE
+
+this is deprecated in favor of the official integration: https://zapier.com/apps/splitwise/integrations
+
 # zapier-splitwise
 
 A [Zapier](https://zapier.com) app that gives access to the [Splitwise API](http://dev.splitwise.com/). This versions is built for Zapier platform 2.
